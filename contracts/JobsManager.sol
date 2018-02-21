@@ -5,6 +5,8 @@ import "./ITrueBit.sol";
 
 
 contract JobsManager is IVerifiable {
+    // Contract entry point into TrueBit system
+    ITrueBit public trueBit;
     // IPFS hash used to download the WASM binary containing verification code
     // that is run by Truebit solvers and verifiers
     string public codeHash;
@@ -13,8 +15,6 @@ contract JobsManager is IVerifiable {
     // for a transcoded video segment
     // In the simplest case, this string just contains a single video profile identifier
     string public transcodingOptions;
-    // Contract entry point into TrueBit system
-    ITrueBit public trueBit;
 
     event ReceivedVerification(bool passed);
 
@@ -24,9 +24,9 @@ contract JobsManager is IVerifiable {
     }
 
     function JobsManager(address _trueBit, string _codeHash, string _transcodingOptions) public {
+        trueBit = ITrueBit(_trueBit);
         codeHash = _codeHash;
         transcodingOptions = _transcodingOptions;
-        trueBit = ITrueBit(_trueBit);
     }
 
     function verify(string _dataIPFSHash) external payable {
