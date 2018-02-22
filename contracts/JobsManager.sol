@@ -25,7 +25,7 @@ contract JobsManager is IVerifiable {
         _;
     }
 
-    function JobsManager(address _trueBit, string _codeHash, string _codeRootHash, string _transcodingOptions) public {
+    function JobsManager(address _trueBit, string _codeHash, bytes32 _codeRootHash, string _transcodingOptions) public {
         trueBit = ITrueBit(_trueBit);
         codeHash = _codeHash;
         codeRootHash = _codeRootHash;

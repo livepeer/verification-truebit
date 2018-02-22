@@ -24,7 +24,7 @@ const uploadIPFS = async file => {
 }
 
 const createIPFSFile = async (file, wasmPath) => {
-    const res = uploadIPFS(file)
+    const res = await uploadIPFS(file)
     const info = JSON.parse(await promisify(shell.exec)(`${wasmPath} -hash-file ${file}`))
 
     console.log(`Created IPFS file - Name: ${file} Size: ${info.size} IPFS Hash: ${res.hash} Data: ${info.root}`)

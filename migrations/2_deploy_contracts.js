@@ -11,6 +11,7 @@ const TRANSCODING_OPTIONS = "a7ac137a"
 
 const ENV_FILE = path.resolve(__dirname, "../.env")
 const WASM_FILE = path.resolve(__dirname, "../data/verification.wasm")
+const WASM_PATH = path.resolve(__dirname, "../../ocaml-offchain/interpreter/wasm")
 
 const deploy = async (deployer, artifact, ...args) => {
     await deployer.deploy(artifact, ...args)
@@ -27,7 +28,7 @@ const updateEnv = async (account, jobsManagerAddress, trueBitAddress) => {
 module.exports = function(deployer, network, accounts) {
     deployer.then(async () => {
         // Upload global WASM binary for Livepeer protocol
-        const res = await createIPFSFile(WASM_FILE)
+        const res = await createIPFSFile(WASM_FILE, WASM_PATH)
         const trueBit = await deploy(deployer, TrueBitMock)
         const jobsManager = await deploy(deployer, JobsManager, trueBit.address, res.ipfsHash, res.root, TRANSCODING_OPTIONS)
 
