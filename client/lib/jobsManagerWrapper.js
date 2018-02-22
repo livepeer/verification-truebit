@@ -1,5 +1,5 @@
 const { promisify } = require("util")
-const { uploadIPFS } = require("./ipfs")
+const { createIPFSFile } = require("./ipfs")
 const JobsManagerArtifact = require("../../build/contracts/JobsManager.json")
 
 class JobsManagerWrapper {
@@ -17,11 +17,10 @@ class JobsManagerWrapper {
         return receipt
     }
 
-    async uploadAndVerify(file) {
-        const res = await uploadIPFS(file)
-        console.log(`Uploaded data to IPFS: ${res.hash}`)
+    async uploadAndVerify(file, wasmPath) {
+        const info = await createIPFSFile(file, wasmPath)
 
-        return await this.verify(res.hash)
+        return await this.verify(info.ipfsHash)
     }
 
     async getJobsManager() {

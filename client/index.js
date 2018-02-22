@@ -9,6 +9,7 @@ const { uploadIPFS } = require("./lib/ipfs")
 
 const provider = new Web3.providers.HttpProvider("http://localhost:8545")
 const correctDataFile = path.resolve(__dirname, "../data/correct.ts")
+const wasmPath = path.resolve(__dirname, "../../ocaml-offchain/interpreter/wasm")
 
 const run = async () => {
     if (process.env.JOBSMANAGER_ADDRESS === undefined) {
@@ -36,7 +37,7 @@ const run = async () => {
 
     const jobsManager = new JobsManagerWrapper(web3Wrapper, process.env.JOBSMANAGER_ADDRESS, process.env.ACCOUNT)
 
-    await jobsManager.uploadAndVerify(correctDataFile)
+    await jobsManager.uploadAndVerify(correctDataFile, wasmPath)
 
     console.log("Submitted for verification")
 }
