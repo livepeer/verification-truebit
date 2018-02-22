@@ -5,7 +5,7 @@ contract("JobsManager", accounts => {
     const TRUE_BIT = accounts[1]
     // Note: Placeholder IPFS hash
     const CODE_HASH = "QmXKxSKhUZnmjb53HzS94arpshet3N5Kmct8JBAsgm9umR"
-    // Corresponds to bitrate = 6000k, framerate: 60fps, aspectratio: 16:9,. resolution: 1280x720
+    // Corresponds to bitrate = 6000k, framerate: 60fps, aspectratio: 16:9, resolution: 1280x720
     const TRANSCODING_OPTIONS = "a7ac137a"
 
     describe("constructor", () => {

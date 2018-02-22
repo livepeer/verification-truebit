@@ -1,0 +1,29 @@
+{
+  "name": "verification-truebit",
+  "version": "1.0.0",
+  "description": "WIP PoC verification system for the Livepeer protocol using Truebit",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+      "start": "node client/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livepeer/verification-truebit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/livepeer/verification-truebit/issues"
+  },
+  "homepage": "https://github.com/livepeer/verification-truebit#readme",
+  "dependencies": {
+    "ipfs-api": "^18.1.1",
+    "prompt-sync": "^4.1.5",
+    "web3": "0.20.0",
+    "yargs-parser": "^9.0.2"
+  }
+}
