@@ -7,6 +7,8 @@ const JobsManager = artifacts.require("JobsManager")
 
 // Note: Placeholder IPFS hash
 const CODE_HASH = "QmXKxSKhUZnmjb53HzS94arpshet3N5Kmct8JBAsgm9umR"
+// Note: Placeholder root hash
+const CODE_ROOT_HASH = web3.sha3("hello")
 // Corresponds to bitrate = 6000k, framerate: 60fps, aspectratio: 16:9, resolution: 1280x720
 const TRANSCODING_OPTIONS = "a7ac137a"
 
@@ -27,7 +29,7 @@ const updateEnv = async (account, jobsManagerAddress, trueBitAddress) => {
 module.exports = function(deployer, network, accounts) {
     deployer.then(async () => {
         const trueBit = await deploy(deployer, TrueBitMock)
-        const jobsManager = await deploy(deployer, JobsManager, trueBit.address, CODE_HASH, TRANSCODING_OPTIONS)
+        const jobsManager = await deploy(deployer, JobsManager, trueBit.address, CODE_HASH, CODE_ROOT_HASH, TRANSCODING_OPTIONS)
 
         await updateEnv(accounts[0], jobsManager.address, trueBit.address)
     })

@@ -10,6 +10,8 @@ contract JobsManager is IVerifiable {
     // IPFS hash used to download the WASM binary containing verification code
     // that is run by Truebit solvers and verifiers
     string public codeHash;
+    // Root hash for the WASM binary file in IPFS
+    bytes32 public codeRootHash;
     // String of identifiers that correspond to a video profiles defining
     // the required values for fields such as resolution, framerate, bitrate, etc.
     // for a transcoded video segment
@@ -23,9 +25,10 @@ contract JobsManager is IVerifiable {
         _;
     }
 
-    function JobsManager(address _trueBit, string _codeHash, string _transcodingOptions) public {
+    function JobsManager(address _trueBit, string _codeHash, bytes32 _codeRootHash, string _transcodingOptions) public {
         trueBit = ITrueBit(_trueBit);
         codeHash = _codeHash;
+        codeRootHash = _codeRootHash;
         transcodingOptions = _transcodingOptions;
     }
 
