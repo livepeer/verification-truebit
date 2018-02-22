@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-      "start": "node client/index.js"
+    "compile": "rm -rf build && truffle compile --all",
+    "migrate": "truffle migrate",
+    "uploadAndVerify": "node client/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,9 +23,10 @@
   },
   "homepage": "https://github.com/livepeer/verification-truebit#readme",
   "dependencies": {
+    "dotenv": "^5.0.0",
     "ipfs-api": "^18.1.1",
     "prompt-sync": "^4.1.5",
-    "web3": "0.20.0",
-    "yargs-parser": "^9.0.2"
+    "truffle": "^4.0.6",
+    "web3": "0.20.0"
   }
 }
