@@ -1,6 +1,7 @@
 # Clone ffmpeg project
-git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
+git clone https://github.com/mrsmkl/FFmpeg ffmpeg
 cd ffmpeg
+git checkout truebit_check
 
 echo "Beginning build..."
 
@@ -28,12 +29,13 @@ make install
 
 cd ..
 
-cp $HOME/compiled/wasm/bin/ffprobe ffprobe.bc
+cp $HOME/compiled/wasm/bin/ffcheck ffcheck.bc
 
-emcc -o ffprobe.js ffprobe.bc
+emcc -o ffcheck.js ffcheck.bc
 
 cp data/correct.ts input.ts
 
-node ../emscripten-module-wrapper/prepare.js ffprobe.js --arg=-i --arg=input.ts --file input.ts
+node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts
 # Use the below line if you want to use the floating point emulator
-# node ../emscripten-module-wrapper/prepare.js ffprobe.js --float --arg=-i --arg=input.ts --file input.ts
+# node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts --float
+
