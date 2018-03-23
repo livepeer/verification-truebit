@@ -24,10 +24,10 @@
   "homepage": "https://github.com/livepeer/verification-truebit#readme",
   "dependencies": {
     "dotenv": "^5.0.0",
-    "ipfs-api": "^18.1.1",
+    "ipfs-api": "^18.2.1",
     "prompt-sync": "^4.1.5",
     "shelljs": "^0.8.1",
     "truffle": "^4.0.6",
-    "web3": "0.20.0"
+    "web3": "^1.0.0-beta.28"
   }
 }
