@@ -6,7 +6,7 @@ git checkout truebit_check
 echo "Beginning build..."
 
 # Configure
-EMCC_WASM_BACKEND=1
+export EMCC_WASM_BACKEND=1
 EM_PKG_CONFIG_PATH="$HOME/compiled/wasm/lib/pkgconfig"
 emconfigure ./configure --disable-programs --disable-doc --disable-sdl2 \
             --disable-iconv --disable-muxers --disable-demuxers --disable-parsers \
