@@ -24,7 +24,7 @@ emconfigure ./configure --disable-programs --disable-doc --disable-sdl2 \
             --disable-stripping
 
 # Generate linked LLVM bitcode
-make
+make -j 12
 make install
 
 cd ..
@@ -34,6 +34,7 @@ cp $HOME/compiled/wasm/bin/ffcheck ffcheck.bc
 emcc -o ffcheck.js ffcheck.bc
 
 cp data/correct.ts input.ts
+touch output.data
 
 node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts
 # Use the below line if you want to use the floating point emulator
