@@ -6,7 +6,6 @@ git checkout truebit_check
 echo "Beginning build..."
 
 # Configure
-export EMCC_WASM_BACKEND=1
 EM_PKG_CONFIG_PATH="$HOME/compiled/wasm/lib/pkgconfig"
 emconfigure ./configure --disable-programs --disable-doc --disable-sdl2 \
             --disable-iconv --disable-muxers --disable-demuxers --disable-parsers \
@@ -22,6 +21,8 @@ emconfigure ./configure --disable-programs --disable-doc --disable-sdl2 \
             --target-os=none --arch=x86_32 --cpu=generic --enable-ffprobe --disable-asm \
             --disable-devices --disable-pthreads --disable-network --disable-hwaccels \
             --disable-stripping
+
+export EMCC_WASM_BACKEND=1
 
 # Generate linked LLVM bitcode
 make -j 12
