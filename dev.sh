@@ -23,5 +23,7 @@ sleep 10
 
 cd /verification-truebit
 
-node deploy.js
+node deploy.js | tee config.json
+
+node post.js
 
