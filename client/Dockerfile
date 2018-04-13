@@ -33,6 +33,11 @@ RUN eval `opam config env` \
  && cd ocaml-offchain/interpreter \
  && make
 
+RUN wget https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.8.3-329ac18e.tar.gz && \
+  tar xf geth-linux-amd64-*.tar.gz && \
+  rm geth-linux-amd64-*.tar.gz && \
+  cp geth-linux-amd64*/geth /bin/geth
+
 RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
  && cd webasm-solidity \
  && git checkout kovan \
