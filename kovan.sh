@@ -14,7 +14,7 @@ parity --chain kovan --unlock=`cat ~/.local/share/io.parity.ethereum/chains/kova
 sleep 10
 
 cd verification-truebit
-node setup.js kovan.json > config.json
+node ../webasm-solidity/node/setup.js kovan.json > config.json
 
 cd ../webasm-solidity/node
 node setup.js kovan.json > config.json
