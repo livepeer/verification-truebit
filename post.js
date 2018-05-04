@@ -13,7 +13,7 @@ var send_opt = {gas:4700000, from:config.base}
 var w3provider = new web3.providers.WebsocketProvider('ws://' + host + ':8546')
 web3.setProvider(w3provider)
 
-var ipfs = ipfsAPI(host, '5001', {protocol: 'http'})
+var ipfs = ipfsAPI(config.ipfshost, '5001', {protocol: 'http'})
 
 var filesystem = new web3.eth.Contract(JSON.parse(fs.readFileSync("../webasm-solidity/contracts/compiled/Filesystem.abi")), config.fs)
 var contract = new web3.eth.Contract(JSON.parse(fs.readFileSync("./compiled/Task.abi")), config.post)

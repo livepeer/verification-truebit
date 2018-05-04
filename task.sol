@@ -58,7 +58,7 @@ contract Task {
       filesystem.addToBundle(bundle, filesystem.createFileWithContents("output.data", num+1000000000, empty, 0));
       filesystem.finalizeBundleIPFS(bundle, code, init);
       
-      uint task = truebit.addWithParameters(filesystem.getInitHash(bundle), 1, 1, idToString(bundle), 20, 25, 8, 20, 10);
+      uint task = truebit.addWithParameters(filesystem.getInitHash(bundle), 1, 1, idToString(bundle), 20, 21, 8, 20, 10);
       truebit.requireFile(task, hashName("output.data"), 0);
 
       task_to_ipfs[task] = hash;

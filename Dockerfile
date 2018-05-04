@@ -4,7 +4,7 @@ MAINTAINER Sami Mäkelä
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update \
- && apt-get install -y git cmake ninja-build g++ python wget ocaml opam libzarith-ocaml-dev m4 pkg-config zlib1g-dev apache2 psmisc sudo curl mongodb \
+ && apt-get install -y git cmake ninja-build g++ python wget ocaml opam libzarith-ocaml-dev m4 pkg-config zlib1g-dev apache2 psmisc sudo mongodb curl \
  && opam init -y
 
 RUN cd bin \
