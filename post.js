@@ -66,6 +66,7 @@ function uploadIPFS(fname) {
     return new Promise(function (cont,err) {
         fs.readFile(fname, function (err, buf) {
             ipfs.files.add([{content:buf, path:fname}], function (err, res) {
+                if (err) console.log(err)
                 cont(res[0])
             })
         })
@@ -85,7 +86,7 @@ function stringToBytes(str) {
 
 var fname = process.argv[2] || "input.ts"
 
-async function doPost() {
+async function doPost(fname) {
     
     var file = await createIPFSFile(fname)
     console.log("Uploaded to IPFS", file)
@@ -107,7 +108,7 @@ async function doPost() {
     // process.exit(0)
 }
 
-doPost()
+doPost(fname)
 
 
 

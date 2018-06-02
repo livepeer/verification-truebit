@@ -1,30 +1,7 @@
 
 pragma solidity ^0.4.18;
 
-interface Filesystem {
 
-   function addIPFSFile(string name, uint size, string hash, bytes32 root, uint nonce) public returns (bytes32);
-   function createFileWithContents(string name, uint nonce, bytes32[] arr, uint sz) public returns (bytes32);
-   function getSize(bytes32 id) public view returns (uint);
-   function getRoot(bytes32 id) public view returns (bytes32);
-   function forwardData(bytes32 id, address a) public;
-   
-   // function makeSimpleBundle(uint num, address code, bytes32 code_init, bytes32 file_id) public returns (bytes32);
-   
-   function makeBundle(uint num) public view returns (bytes32);
-   function addToBundle(bytes32 id, bytes32 file_id) public returns (bytes32);
-   function finalizeBundleIPFS(bytes32 id, string file, bytes32 init) public;
-   function getInitHash(bytes32 bid) public view returns (bytes32);
-   
-   function debug_finalizeBundleIPFS(bytes32 id, string file, bytes32 init) public returns (bytes32, bytes32, bytes32, bytes32, bytes32);
-   
-}
-
-interface Truebit {
-   function add(bytes32 init, /* CodeType */ uint8 ct, /* Storage */ uint8 cs, string stor) public returns (uint);
-   function addWithParameters(bytes32 init, /* CodeType */ uint8 ct, /* Storage */ uint8 cs, string stor, uint8 stack, uint8 mem, uint8 globals, uint8 table, uint8 call) public returns (uint);
-   function requireFile(uint id, bytes32 hash, /* Storage */ uint8 st) public;
-}
 
 contract Task {
    uint nonce;
