@@ -6,6 +6,7 @@ interface IFilesystem {
    function createFileWithContents(string name, uint nonce, bytes32[] arr, uint sz) external returns (bytes32);
    function getSize(bytes32 id) external view returns (uint);
    function getRoot(bytes32 id) external view returns (bytes32);
+   function getData(bytes32 id) external view returns (bytes32[]);
    function forwardData(bytes32 id, address a) external;
    
    function makeBundle(uint num) external view returns (bytes32);

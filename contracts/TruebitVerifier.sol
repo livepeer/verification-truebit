@@ -29,10 +29,12 @@ contract TruebitVerifier {
         _;
     }
 
+/*
     modifier onlyFS() {
         require(msg.sender == address(filesystem));
         _;
     }
+*/
 
     uint nonce;
     IFilesystem filesystem;
@@ -91,44 +93,47 @@ contract TruebitVerifier {
         return 0;
     }
 
+    /*
     uint remember_task;
    
     function consume(bytes32, bytes32[] arr) external onlyFS {
         // Consuming(arr);
         TaskData storage t = task_to_data[remember_task];
         IVerifiable(t.receiver).receiveVerification(t.jobId, t.claimId, t.segmentNumber, uint(arr[0]) > 0);
-    }
+    }*/
 
     // this is the callback name
     function solved(uint id, bytes32[] files) external onlyTruebit {
         // could check the task id
-        remember_task = id;
+        // remember_task = id;
         filesystem.forwardData(files[0], this);
-        // GotFiles(files);
+        TaskData storage t = task_to_data[id];
+        bytes32[] memory arr = filesystem.getData(files[0]);
+        IVerifiable(t.receiver).receiveVerification(t.jobId, t.claimId, t.segmentNumber, uint(arr[0]) > 0);
     }
 
+    ///// Utils
 
-   ///// Utils
+    function idToString(bytes32 id) public pure returns (string) {
+        bytes memory res = new bytes(64);
+        for (uint i = 0; i < 64; i++) res[i] = bytes1(((uint(id) / (2**(4*i))) & 0xf) + 65);
+        return string(res);
+    }
 
-   function idToString(bytes32 id) public pure returns (string) {
-      bytes memory res = new bytes(64);
-      for (uint i = 0; i < 64; i++) res[i] = bytes1(((uint(id) / (2**(4*i))) & 0xf) + 65);
-      return string(res);
-   }
+    function makeMerkle(bytes arr, uint idx, uint level) internal pure returns (bytes32) {
+        if (level == 0) return idx < arr.length ? bytes32(uint(arr[idx])) : bytes32(0);
+        else return keccak256(makeMerkle(arr, idx, level-1), makeMerkle(arr, idx+(2**(level-1)), level-1));
+    }
 
-   function makeMerkle(bytes arr, uint idx, uint level) internal pure returns (bytes32) {
-      if (level == 0) return idx < arr.length ? bytes32(uint(arr[idx])) : bytes32(0);
-      else return keccak256(makeMerkle(arr, idx, level-1), makeMerkle(arr, idx+(2**(level-1)), level-1));
-   }
+    function calcMerkle(bytes32[] arr, uint idx, uint level) internal returns (bytes32) {
+        if (level == 0) return idx < arr.length ? arr[idx] : bytes32(0);
+        else return keccak256(calcMerkle(arr, idx, level-1), calcMerkle(arr, idx+(2**(level-1)), level-1));
+    }
 
-   function calcMerkle(bytes32[] arr, uint idx, uint level) internal returns (bytes32) {
-      if (level == 0) return idx < arr.length ? arr[idx] : bytes32(0);
-      else return keccak256(calcMerkle(arr, idx, level-1), calcMerkle(arr, idx+(2**(level-1)), level-1));
-   }
-
-   // assume 256 bytes?
-   function hashName(string name) public pure returns (bytes32) {
-      return makeMerkle(bytes(name), 0, 8);
-   }
+    // assume 256 bytes?
+    function hashName(string name) public pure returns (bytes32) {
+        return makeMerkle(bytes(name), 0, 8);
+    }
 
 }
+
