@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source /emsdk/emsdk_env.sh
+# source /emsdk/emsdk_env.sh
 
 if [ ! -f supersecret.txt ]
 then
