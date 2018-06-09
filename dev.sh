@@ -25,5 +25,5 @@ cd /verification-truebit
 
 node deploy.js | tee config.json
 
-node post.js
+node post.js data/correct.ts
 

@@ -15,6 +15,7 @@ contract Task {
    
    event GotFiles(bytes32[] files);
    event Consuming(bytes32[] arr);
+   event Submitted(uint task, bytes32 root);
    
    constructor(address tb, address fs, string code_address, bytes32 init_hash) public {
       truebit = ITruebit(tb);
@@ -24,7 +25,7 @@ contract Task {
    }
 
    // add new task for a file
-   function submit(string hash, bytes32 root, uint size) public returns (bytes32) {
+   function submit(string hash, bytes32 root, uint size) public {
       bytes32 input_file = filesystem.addIPFSFile("input.ts", size, hash, root, nonce++);
       bytes32 bundle = filesystem.makeBundle(nonce++);
       filesystem.addToBundle(bundle, input_file);
@@ -38,7 +39,7 @@ contract Task {
 
       task_to_ipfs[task] = hash;
 
-      return filesystem.getRoot(input_file);
+      emit Submitted(task, filesystem.getRoot(input_file));
    }
 
    /*

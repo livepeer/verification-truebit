@@ -38,7 +38,7 @@ RUN eval `opam config env` \
  && cd ocaml-offchain/interpreter \
  && make
 
-RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
+RUN git clone https://github.com/mrsmkl/webasm-solidity \
  && cd webasm-solidity \
  && sh ./scripts/compile.sh \
  && npm install
