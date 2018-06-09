@@ -22,5 +22,6 @@ interface ITruebit {
    function add(bytes32 init, /* CodeType */ uint8 ct, /* Storage */ uint8 cs, string stor) external returns (uint);
    function addWithParameters(bytes32 init, /* CodeType */ uint8 ct, /* Storage */ uint8 cs, string stor, uint8 stack, uint8 mem, uint8 globals, uint8 table, uint8 call) external returns (uint);
    function requireFile(uint id, bytes32 hash, /* Storage */ uint8 st) external;
+   function commit(uint id) external;
 }
 

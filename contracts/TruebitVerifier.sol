@@ -29,13 +29,6 @@ contract TruebitVerifier {
         _;
     }
 
-/*
-    modifier onlyFS() {
-        require(msg.sender == address(filesystem));
-        _;
-    }
-*/
-
     uint nonce;
     IFilesystem filesystem;
     
@@ -67,19 +60,26 @@ contract TruebitVerifier {
         string _dataStorageHash,
         bytes32[2] _dataHashes
     ) external payable returns (bytes32) {
-        uint num = nonce;
         bytes32 root = _dataHashes[0];
         uint size = uint(_dataHashes[1]);
-        nonce++;
-        bytes32 input_file = filesystem.addIPFSFile("input.ts", size, _dataStorageHash, root, num);
-        bytes32 bundle = filesystem.makeBundle(num);
+        
+        // The input files are stored in a "bundle", first we create it
+        bytes32 bundle = filesystem.makeBundle(nonce++);
+        // There are two needed files, first is the input file
+        bytes32 input_file = filesystem.addIPFSFile("input.ts", size, _dataStorageHash, root, nonce++);
         filesystem.addToBundle(bundle, input_file);
+        // There is also a file for output, it is just an empty file at the beginning of the task
         bytes32[] memory empty = new bytes32[](0);
-        filesystem.addToBundle(bundle, filesystem.createFileWithContents("output.data", num+1000000000, empty, 0));
+        filesystem.addToBundle(bundle, filesystem.createFileWithContents("output.data", nonce++, empty, 0));
+        // Also the task code is part of the bundle
         filesystem.finalizeBundleIPFS(bundle, codeHash, codeRootHash);
       
+        // The parameters correspond to stack_size = 2**20, memory_size = 2**21, globals_size = 2**8, table_size = 2**20, call_size = 2**10
         uint task = truebit.addWithParameters(filesystem.getInitHash(bundle), 1, 1, idToString(bundle), 20, 21, 8, 20, 10);
+        // Specify a file that has to be uploaded into the blockchain
         truebit.requireFile(task, hashName("output.data"), 0);
+        // This is needed so that no extra files will be required afterwards
+        truebit.commit(task);
 
         task_to_data[task].jobId = _jobId;
         task_to_data[task].claimId = _claimId;
@@ -92,15 +92,6 @@ contract TruebitVerifier {
     function getPrice() public pure returns (uint256) {
         return 0;
     }
-
-    /*
-    uint remember_task;
-   
-    function consume(bytes32, bytes32[] arr) external onlyFS {
-        // Consuming(arr);
-        TaskData storage t = task_to_data[remember_task];
-        IVerifiable(t.receiver).receiveVerification(t.jobId, t.claimId, t.segmentNumber, uint(arr[0]) > 0);
-    }*/
 
     // this is the callback name
     function solved(uint id, bytes32[] files) external onlyTruebit {

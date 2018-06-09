@@ -40,9 +40,7 @@ RUN eval `opam config env` \
 
 RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
  && cd webasm-solidity \
- && sh ./compile.sh \
- && cd node \
- && npm install \
+ && sh ./scripts/compile.sh \
  && npm install
 
 RUN git clone https://github.com/mrsmkl/verification-truebit \
