@@ -49,17 +49,22 @@ contract TruebitVerifier {
         codeRootHash = _codeRootHash;
         // transcodingOptions = _transcodingOptions;
     }
-
+    
+    function blockNum() public view returns (uint) {
+        return block.number;
+    }
+    
+    event GotTask(string ipfshash, uint size);
 
     // ipfs hash, binary merkle root and size are all required here
     function verify(
         uint256 _jobId,
         uint256 _claimId,
         uint256 _segmentNumber,
-        string /* _transcodingOptions */,
+        string _transcodingOptions,
         string _dataStorageHash,
         bytes32[2] _dataHashes
-    ) external payable returns (bytes32) {
+    ) external payable {
         bytes32 root = _dataHashes[0];
         uint size = uint(_dataHashes[1]);
         
@@ -73,9 +78,9 @@ contract TruebitVerifier {
         filesystem.addToBundle(bundle, filesystem.createFileWithContents("output.data", nonce++, empty, 0));
         // Also the task code is part of the bundle
         filesystem.finalizeBundleIPFS(bundle, codeHash, codeRootHash);
-      
-        // The parameters correspond to stack_size = 2**20, memory_size = 2**21, globals_size = 2**8, table_size = 2**20, call_size = 2**10
-        uint task = truebit.addWithParameters(filesystem.getInitHash(bundle), 1, 1, idToString(bundle), 20, 21, 8, 20, 10);
+
+        // The parameters correspond to stack_size = 2**20, memory_size = 2**23, globals_size = 2**8, table_size = 2**20, call_size = 2**10
+        uint task = truebit.addWithParameters(filesystem.getInitHash(bundle), 1, 1, idToString(bundle), 20, 23, 8, 20, 10);
         // Specify a file that has to be uploaded into the blockchain
         truebit.requireFile(task, hashName("output.data"), 0);
         // This is needed so that no extra files will be required afterwards
@@ -85,10 +90,10 @@ contract TruebitVerifier {
         task_to_data[task].claimId = _claimId;
         task_to_data[task].segmentNumber = _segmentNumber;
         task_to_data[task].receiver = msg.sender;
-        
-        return filesystem.getRoot(input_file);
+
+        emit GotTask(_dataStorageHash, size);
     }
-    
+
     function getPrice() public pure returns (uint256) {
         return 0;
     }
@@ -97,7 +102,7 @@ contract TruebitVerifier {
     function solved(uint id, bytes32[] files) external onlyTruebit {
         // could check the task id
         // remember_task = id;
-        filesystem.forwardData(files[0], this);
+        // filesystem.forwardData(files[0], this);
         TaskData storage t = task_to_data[id];
         bytes32[] memory arr = filesystem.getData(files[0]);
         IVerifiable(t.receiver).receiveVerification(t.jobId, t.claimId, t.segmentNumber, uint(arr[0]) > 0);
