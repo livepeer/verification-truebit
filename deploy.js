@@ -1,5 +1,4 @@
 
-
 var fs = require("fs")
 var Web3 = require('web3')
 var web3 = new Web3()
@@ -110,10 +109,10 @@ async function doDeploy() {
     var contract = await new web3.eth.Contract(abi).deploy({data: code, arguments:[config.tasks, config.fs, info.ipfshash, info.codehash]}).send(send_opt)
     config.post = contract.options.address
     console.log(JSON.stringify(config))
-    
-    /*
+
     contract.setProvider(w3provider)
     
+    /*
     var file = await createIPFSFile("input.ts")
     console.log("Uploaded to IPFS", file)
     var file_hash = await contract.methods.submit(file.hash, file.root, file.size).call(send_opt)

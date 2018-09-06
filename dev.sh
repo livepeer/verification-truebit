@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source /emsdk/emsdk_env.sh
+# source /emsdk/emsdk_env.sh
 
 if [ ! -f supersecret.txt ]
 then
@@ -25,5 +25,5 @@ cd /verification-truebit
 
 node deploy.js | tee config.json
 
-node post.js
+node post.js data/correct.ts
 

@@ -36,11 +36,13 @@ RUN eval `opam config env` \
  && opam install cryptokit yojson -y \
  && git clone https://github.com/TrueBitFoundation/ocaml-offchain \
  && cd ocaml-offchain/interpreter \
+ && git checkout asmjs \
  && make
 
-RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
+RUN git clone https://github.com/mrsmkl/webasm-solidity \
  && cd webasm-solidity \
- && sh ./compile.sh \
+ && git checkout livepeer \
+ && sh ./scripts/compile.sh \
  && apt-get install -y tmux \
  && cd node \
  && npm install \
@@ -57,4 +59,6 @@ EXPOSE 80 22448 4001
 
 # docker build . -t truebit-livepeer-client:latest
 # docker run -it -p 8080:80 -p 4001:4001 -p 22448:22448 truebit-livepeer-client:latest /bin/bash
+
+# The run sh verification-truebit/dev.sh
 

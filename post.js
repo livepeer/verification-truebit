@@ -66,6 +66,7 @@ function uploadIPFS(fname) {
     return new Promise(function (cont,err) {
         fs.readFile(fname, function (err, buf) {
             ipfs.files.add([{content:buf, path:fname}], function (err, res) {
+                if (err) console.log(err)
                 cont(res[0])
             })
         })
@@ -85,12 +86,16 @@ function stringToBytes(str) {
 
 var fname = process.argv[2] || "input.ts"
 
-async function doPost() {
+async function doPost(fname) {
     
     var file = await createIPFSFile(fname)
     console.log("Uploaded to IPFS", file)
     var file_hash = await contract.methods.submit(file.hash, file.root, file.size).call(send_opt)
     console.log(file_hash)
+    contract.events.Submitted(function (err,ev) {
+        if (err) return console.log(err)
+        console.log("Submitted", ev.returnValues)
+    })
     var tx = await contract.methods.submit(file.hash, file.root, file.size).send(send_opt)
     console.log(tx)
     contract.events.GotFiles(function (err,ev) {
@@ -107,7 +112,7 @@ async function doPost() {
     // process.exit(0)
 }
 
-doPost()
+doPost(fname)
 
 
 
