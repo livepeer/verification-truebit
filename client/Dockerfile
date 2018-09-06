@@ -4,7 +4,7 @@ MAINTAINER Sami Mäkelä
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update \
- && apt-get install -y git cmake ninja-build g++ python wget ocaml opam libzarith-ocaml-dev m4 pkg-config zlib1g-dev apache2 psmisc sudo curl mongodb \
+ && apt-get install -y git cmake ninja-build g++ python wget ocaml opam libzarith-ocaml-dev m4 pkg-config zlib1g-dev apache2 psmisc sudo curl mongodb tmux nano \
  && opam init -y
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
@@ -41,19 +41,17 @@ RUN eval `opam config env` \
 RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
  && cd webasm-solidity \
  && sh ./compile.sh \
+ && apt-get install -y tmux \
  && cd node \
  && npm install \
+ && cp app.html /var/www/html/index.html \
+ && cp socketio.js /var/www/html/ \
  && npm install
 
 RUN git clone https://github.com/mrsmkl/verification-truebit \
  && cd verification-truebit \
  && solc --abi --optimize --overwrite --bin -o compiled task.sol \
  && npm install
-
-RUN cd webasm-solidity/node \
- && cp app.html /var/www/html/index.html \
- && cp socketio.js /var/www/html/ \
- && apt-get install -y tmux
 
 EXPOSE 80 22448 4001
 

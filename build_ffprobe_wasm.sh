@@ -37,7 +37,7 @@ emcc -o ffcheck.js ffcheck.bc
 cp data/correct.ts input.ts
 touch output.data
 
-node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts
+node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts --run --memory-size=21
 # Use the below line if you want to use the floating point emulator
 # node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts --float
 

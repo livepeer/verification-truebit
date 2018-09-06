@@ -3,8 +3,8 @@ MAINTAINER Sami Mäkelä
 
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update \
- && apt-get install -y git cmake ninja-build g++ python wget ocaml opam libzarith-ocaml-dev m4 pkg-config zlib1g-dev apache2 psmisc sudo mongodb curl \
+RUN apt-get  update \
+ && apt-get install -y git cmake ninja-build g++ python wget ocaml opam libzarith-ocaml-dev m4 pkg-config zlib1g-dev apache2 psmisc sudo mongodb curl tmux nano \
  && opam init -y
 
 RUN git clone https://github.com/juj/emsdk \
@@ -41,6 +41,7 @@ RUN eval `opam config env` \
 RUN git clone https://github.com/TrueBitFoundation/emscripten-module-wrapper \
  && source /emsdk/emsdk_env.sh \
  && cd emscripten-module-wrapper \
+ && git checkout test \
  && npm install
 
 RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
@@ -48,10 +49,11 @@ RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
  && cd  webasm-solidity/node \
  && npm install \
  && cd .. \
- && sh ./compile.sh
+ && sh ./scripts/compile.sh
 
 RUN git clone https://github.com/mrsmkl/verification-truebit \
  && cd verification-truebit \
+ && git pull \
  && source /emsdk/emsdk_env.sh \
  && sh ./build_ffprobe_wasm.sh \
  && solc --abi --optimize --overwrite --bin -o compiled task.sol \
@@ -59,8 +61,7 @@ RUN git clone https://github.com/mrsmkl/verification-truebit \
 
 RUN cd webasm-solidity/node \
  && cp app.html /var/www/html/index.html \
- && cp socketio.js /var/www/html/ \
- && apt-get install -y tmux
+ && cp socketio.js /var/www/html/
 
 EXPOSE 80 22448 4001
 
