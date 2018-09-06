@@ -46,7 +46,7 @@ RUN git clone https://github.com/TrueBitFoundation/emscripten-module-wrapper \
 
 RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
  && cd webasm-solidity \
- &&  git checkout test-node-deploy \
+ &&   git checkout test-node-deploy \
  && cd node \
  && source /emsdk/emsdk_env.sh \
  && npm install \
@@ -57,6 +57,7 @@ RUN git clone https://github.com/mrsmkl/verification-truebit \
  && cd verification-truebit \
  && git pull \
  && source /emsdk/emsdk_env.sh \
+ && ipfs daemon \
  && sh ./build_ffprobe_wasm.sh \
  && solc --abi --optimize --overwrite --bin -o compiled task.sol \
  && npm install
