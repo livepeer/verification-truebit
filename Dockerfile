@@ -57,12 +57,13 @@ RUN git clone https://github.com/mrsmkl/verification-truebit \
  && cd verification-truebit \
  && git pull \
  && source /emsdk/emsdk_env.sh \
- && ipfs daemon \
+ && ( ipfs daemon & ) \
  && sh ./build_ffprobe_wasm.sh \
  && solc --abi --optimize --overwrite --bin -o compiled task.sol \
  && npm install
 
 RUN cd webasm-solidity/node \
+ && npm i \
  && cp app.html /var/www/html/index.html \
  && cp socketio.js /var/www/html/
 
