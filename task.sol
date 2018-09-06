@@ -42,15 +42,6 @@ contract Task {
       emit Submitted(task, filesystem.getRoot(input_file));
    }
 
-   /*
-   uint remember_task;
-   
-   function consume(bytes32, bytes32[] arr) public {
-      Consuming(arr);
-      require(Filesystem(msg.sender) == filesystem);
-      result[task_to_ipfs[remember_task]] = uint(arr[0]);
-   }*/
-
    // this is the callback name
    function solved(uint id, bytes32[] files) public {
       // could check the task id

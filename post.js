@@ -91,13 +91,13 @@ async function doPost(fname) {
     var file = await createIPFSFile(fname)
     console.log("Uploaded to IPFS", file)
     var file_hash = await contract.methods.submit(file.hash, file.root, file.size).call(send_opt)
-    console.log(file_hash)
+    console.log("submitting with hash", file_hash)
     contract.events.Submitted(function (err,ev) {
         if (err) return console.log(err)
         console.log("Submitted", ev.returnValues)
     })
     var tx = await contract.methods.submit(file.hash, file.root, file.size).send(send_opt)
-    console.log(tx)
+    console.log("performed tx", tx)
     contract.events.GotFiles(function (err,ev) {
         if (err) return console.log(err)
         console.log("Files", ev.returnValues)

@@ -45,8 +45,10 @@ RUN git clone https://github.com/TrueBitFoundation/emscripten-module-wrapper \
  && npm install
 
 RUN git clone https://github.com/TrueBitFoundation/webasm-solidity \
+ && cd webasm-solidity \
+ &&  git checkout test-node-deploy \
+ && cd node \
  && source /emsdk/emsdk_env.sh \
- && cd  webasm-solidity/node \
  && npm install \
  && cd .. \
  && sh ./scripts/compile.sh
