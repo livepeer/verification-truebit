@@ -63,6 +63,7 @@ RUN git clone https://github.com/mrsmkl/verification-truebit \
  && npm install
 
 RUN cd webasm-solidity/node \
+ && source /emsdk/emsdk_env.sh \
  && npm i \
  && cp app.html /var/www/html/index.html \
  && cp socketio.js /var/www/html/
