@@ -1,11 +1,11 @@
 # Clone ffmpeg project
-git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
+git clone https://github.com/mrsmkl/FFmpeg ffmpeg
 cd ffmpeg
+git checkout truebit_check
 
 echo "Beginning build..."
 
 # Configure
-EMCC_WASM_BACKEND=1
 EM_PKG_CONFIG_PATH="$HOME/compiled/wasm/lib/pkgconfig"
 emconfigure ./configure --disable-programs --disable-doc --disable-sdl2 \
             --disable-iconv --disable-muxers --disable-demuxers --disable-parsers \
@@ -22,18 +22,22 @@ emconfigure ./configure --disable-programs --disable-doc --disable-sdl2 \
             --disable-devices --disable-pthreads --disable-network --disable-hwaccels \
             --disable-stripping
 
+export EMCC_WASM_BACKEND=1
+
 # Generate linked LLVM bitcode
-make
+make -j 12
 make install
 
 cd ..
 
-cp $HOME/compiled/wasm/bin/ffprobe ffprobe.bc
+cp $HOME/compiled/wasm/bin/ffcheck ffcheck.bc
 
-emcc -o ffprobe.js ffprobe.bc
+emcc -o ffcheck.js ffcheck.bc
 
 cp data/correct.ts input.ts
+touch output.data
 
-node ../emscripten-module-wrapper/prepare.js ffprobe.js --arg=-i --arg=input.ts --file input.ts
+node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts --run --memory-size=21 --ipfs-host=localhost
 # Use the below line if you want to use the floating point emulator
-# node ../emscripten-module-wrapper/prepare.js ffprobe.js --float --arg=-i --arg=input.ts --file input.ts
+# node ../emscripten-module-wrapper/prepare.js ffcheck.js --file output.data --file input.ts --float
+
